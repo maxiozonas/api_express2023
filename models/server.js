@@ -6,14 +6,21 @@ class Server {
         this.port = process.env.PORT || 3000;
         this.app = express();
 
+        // 1ro en orden
+        this.middleware()
+        // 2do en orden
         this.routes();
     }
 
+    middleware() {
+        // Una vez que se configura esta seccion publica, NO es posible utilizar esta ruta.
+        this.app.use(express.static('public'));
+    }
+
     routes() {
-        // Define una ruta GET para la raíz
-        this.app.get('/', (req, res) => {
-            res.send("Hello World!");
-        });
+        this.app.use('/api/v1/demo', require('../routes/demo'))
+
+        
     }
 
     listen() {
